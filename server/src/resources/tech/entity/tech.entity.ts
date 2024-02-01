@@ -1,8 +1,8 @@
 import {
   Column,
   Entity,
-  ManyToMany,
-  JoinTable,
+  ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { TechType } from '../enum/tech-type.enum';
@@ -32,8 +32,9 @@ export class TechEntity {
   })
   category: TechCategory;
 
-  // Add this field to represent the edges
-  @JoinTable()
-  @ManyToMany(() => TechEntity)
-  relatedTechs: TechEntity[];
+  @ManyToOne(() => TechEntity, (tech) => tech.children)
+  parent: TechEntity;
+
+  @OneToMany(() => TechEntity, (tech) => tech.parent)
+  children: TechEntity[];
 }
