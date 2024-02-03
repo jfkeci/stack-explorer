@@ -13,9 +13,12 @@ export class TechUtilsService {
     );
   }
 
-  formatParent(parentId?: number): TechEntity {
-    if (!parentId) return null;
+  formatParents(parents?: number[]): TechEntity[] {
+    if (!!!parents?.length) return [];
 
-    return plainToInstance(TechEntity, { id: parentId });
+    return plainToInstance(
+      TechEntity,
+      parents.map((c) => ({ id: c })),
+    );
   }
 }

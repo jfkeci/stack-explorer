@@ -5,4 +5,5 @@ export enum TechType {
   DATABASE = 'database',
   RUNTIME = 'runtime',
   OTHERS = 'others',
+  TOOL = 'tool',
 }

@@ -1,12 +1,6 @@
-import {
-  Column,
-  Entity,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { TechTag } from '../enum/tech-tag.enum';
 import { TechType } from '../enum/tech-type.enum';
-import { TechCategory } from '../enum/tech-category.enum';
+import { Column, Entity, ManyToMany, JoinTable, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'techs' })
 export class TechEntity {
@@ -22,19 +16,21 @@ export class TechEntity {
   @Column({
     type: 'enum',
     enum: TechType,
-    default: TechCategory.OTHERS,
+    default: TechTag.OTHERS,
   })
   type: TechType;
 
-  @Column({
-    type: 'enum',
-    enum: TechCategory,
+  @Column('enum', {
+    array: true,
+    default: [],
+    enum: TechTag,
   })
-  category: TechCategory;
+  tags: TechTag[];
 
-  @ManyToOne(() => TechEntity, (tech) => tech.children)
-  parent: TechEntity;
+  @ManyToMany(() => TechEntity, (tech) => tech.children)
+  @JoinTable()
+  parents: TechEntity[];
 
-  @OneToMany(() => TechEntity, (tech) => tech.parent)
+  @ManyToMany(() => TechEntity, (tech) => tech.parents)
   children: TechEntity[];
 }
